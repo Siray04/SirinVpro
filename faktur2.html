@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirinVPro - Aplikasi Faktur Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --mobile-breakpoint: 768px;
+            --tablet-breakpoint: 992px;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            width: 100%;
+        }
+        
+        /* Header Styles - Responsif */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            border-radius: 0;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        @media (min-width: 768px) {
+            header {
+                padding: 1.5rem 0;
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                margin-bottom: 2rem;
+                position: relative;
+                top: auto;
+            }
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 576px) {
+            .header-content {
+                flex-direction: row;
+                align-items: center;
+                gap: 0;
+            }
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        @media (min-width: 768px) {
+            .logo i {
+                font-size: 2rem;
+            }
+        }
+        
+        .logo h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        @media (min-width: 768px) {
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        .tagline {
+            font-style: italic;
+            opacity: 0.9;
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
+        
+        @media (min-width: 768px) {
+            .tagline {
+                font-size: 0.95rem;
+            }
+        }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        @media (min-width: 576px) {
+            .mobile-menu-toggle {
+                margin-top: 0;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-menu-toggle {
+                display: none;
+            }
+        }
+        
+        /* Main Layout - Responsif */
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        @media (min-width: 992px) {
+            .main-layout {
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+                gap: 2rem;
+            }
+        }
+        
+        /* Form Section Toggle untuk Mobile */
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        @media (min-width: 992px) {
+            .form-section {
+                display: block !important;
+            }
+        }
+        
+        /* Panel Styles - Responsif */
+        .panel {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.2rem;
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .panel {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        .panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-gray);
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .panel-title {
+                font-size: 1.2rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        .panel-title i {
+            font-size: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .panel-title i {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Tabs untuk Penjual/Pembeli */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab:hover:not(.active) {
+            color: var(--dark);
+            background-color: var(--light-gray);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Form Styles - Responsif */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .form-group {
+                margin-bottom: 1.2rem;
+            }
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        .form-hint {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        @media (min-width: 768px) {
+            input, select, textarea {
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        /* Button Styles - Responsif */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+                gap: 8px;
+            }
+        }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #3ab5d8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #e11576;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+        }
+        
+        .btn-info {
+            background-color: var(--info);
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background-color: #138496;
+            transform: translateY(-2px);
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        /* Button Group untuk Mobile */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .button-group .btn {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        /* Items Table - Responsif */
+        .items-table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+        
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        .items-table th {
+            background-color: var(--light-gray);
+            padding: 0.7rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        @media (min-width: 768px) {
+            .items-table th {
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+        }
+        
+        .items-table td {
+            padding: 0.7rem;
+            border-bottom: 1px solid var(--light-gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (min-width: 768px) {
+            .items-table td {
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+        }
+        
+        .items-table tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .item-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        /* Invoice Preview - Responsif */
+        .invoice-preview {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            box-shadow: var(--box-shadow);
+            border: 1px solid var(--light-gray);
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .invoice-preview {
+                padding: 2rem;
+            }
+        }
+        
+        .invoice-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 2px solid var(--light-gray);
+        }
+        
+        @media (min-width: 576px) {
+            .invoice-header {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0;
+                margin-bottom: 2rem;
+                padding-bottom: 1.5rem;
+            }
+        }
+        
+        .invoice-title {
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .invoice-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        .invoice-logo-container {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .invoice-logo {
+            max-width: 120px;
+            max-height: 60px;
+            object-fit: contain;
+        }
+        
+        @media (min-width: 768px) {
+            .invoice-logo {
+                max-width: 150px;
+                max-height: 80px;
+            }
+        }
+        
+        .invoice-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .invoice-details {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+        }
+        
+        .invoice-items {
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .invoice-items {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        .invoice-totals {
+            background-color: var(--light-gray);
+            padding: 1.2rem;
+            border-radius: var(--border-radius);
+        }
+        
+        @media (min-width: 768px) {
+            .invoice-totals {
+                padding: 1.5rem;
+            }
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.6rem;
+            font-size: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .total-row {
+                margin-bottom: 0.75rem;
+                font-size: 1.1rem;
+            }
+        }
+        
+        .grand-total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            border-top: 2px solid var(--gray);
+            padding-top: 0.6rem;
+            margin-top: 0.6rem;
+        }
+        
+        @media (min-width: 768px) {
+            .grand-total {
+                font-size: 1.5rem;
+                padding-top: 0.75rem;
+                margin-top: 0.75rem;
+            }
+        }
+        
+        /* Logo Upload Styles - Responsif */
+        .logo-upload-container {
+            border: 2px dashed var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        @media (min-width: 768px) {
+            .logo-upload-container {
+                padding: 1.5rem;
+            }
+        }
+        
+        .logo-upload-container:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .logo-upload-container.dragover {
+            border-color: var(--success);
+            background-color: rgba(76, 201, 240, 0.1);
+        }
+        
+        .logo-preview {
+            max-width: 180px;
+            max-height: 80px;
+            margin: 1rem auto;
+            display: block;
+            object-fit: contain;
+        }
+        
+        @media (min-width: 768px) {
+            .logo-preview {
+                max-width: 200px;
+                max-height: 100px;
+            }
+        }
+        
+        .logo-preview.hidden {
+            display: none;
+        }
+        
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .upload-icon {
+                font-size: 2.5rem;
+            }
+        }
+        
+        .logo-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        /* Form Grid - Responsif */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 576px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.2rem 0;
+            color: var(--gray);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--light-gray);
+        }
+        
+        @media (min-width: 768px) {
+            footer {
+                margin-top: 3rem;
+                padding: 1.5rem 0;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Notification - Responsif */
+        .notification {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            left: 15px;
+            padding: 0.9rem 1.2rem;
+            background-color: var(--success);
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s;
+            z-index: 1000;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 576px) {
+            .notification {
+                left: auto;
+                right: 20px;
+                max-width: 350px;
+            }
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        @media (min-width: 768px) {
+            .empty-state {
+                padding: 3rem 1rem;
+            }
+            
+            .empty-state i {
+                font-size: 3rem;
+            }
+        }
+        
+        /* Mobile Action Buttons */
+        .mobile-action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-action-buttons {
+                display: none;
+            }
+        }
+        
+        /* Desktop Action Buttons */
+        .desktop-action-buttons {
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .desktop-action-buttons {
+                display: block;
+                margin-top: 2rem;
+                text-align: center;
+            }
+        }
+        
+        /* Print Styles - Responsif */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .invoice-preview, .invoice-preview * {
+                visibility: visible;
+            }
+            
+            .invoice-preview {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                border: none;
+                padding: 20px;
+                font-size: 14px;
+            }
+            
+            .btn, .item-actions, .notification, header, footer, .form-section, .panel:not(.invoice-preview), 
+            .mobile-menu-toggle, .mobile-action-buttons, .tabs, .edit-company-btn {
+                display: none !important;
+            }
+            
+            .invoice-logo {
+                max-width: 100px;
+            }
+            
+            .invoice-totals {
+                background-color: transparent;
+                border: 2px solid var(--dark);
+            }
+            
+            .invoice-header {
+                flex-direction: row !important;
+            }
+            
+            .invoice-details {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+        
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+        
+        .visible {
+            display: block !important;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        
+        .mt-2 {
+            margin-top: 1rem;
+        }
+        
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+        
+        .small-text {
+            font-size: 0.85rem;
+        }
+        
+        /* Edit Button di Panel Title */
+        .edit-company-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+        }
+        
+        .edit-company-btn:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        /* Company Info Edit Form */
+        .company-edit-form {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 1rem;
+            border: 1px solid var(--light-gray);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <div>
+                        <h1>SirinVPro</h1>
+                        <div class="tagline">Aplikasi Faktur Online Lengkap</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                        <i class="fas fa-bars"></i>
+                        <span>Menu Form</span>
+                    </button>
+                    
+                    <div class="desktop-action-buttons">
+                        <button class="btn btn-success" id="printInvoice">
+                            <i class="fas fa-print"></i> <span class="desktop-text">Cetak Faktur</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- Mobile Action Buttons -->
+        <div class="mobile-action-buttons">
+            <button class="btn btn-primary btn-sm" id="toggleFormMobile">
+                <i class="fas fa-edit"></i> Form
+            </button>
+            <button class="btn btn-success btn-sm" id="printInvoiceMobile">
+                <i class="fas fa-print"></i> Cetak
+            </button>
+            <button class="btn btn-warning btn-sm" id="saveInvoiceMobile">
+                <i class="fas fa-save"></i> Simpan
+            </button>
+        </div>
+        
+        <div class="main-layout">
+            <!-- Form Panel -->
+            <div class="form-section" id="formSection">
+                <!-- Tabs untuk Penjual/Pembeli -->
+                <div class="panel">
+                    <div class="tabs">
+                        <button class="tab active" data-tab="seller">Penjual</button>
+                        <button class="tab" data-tab="buyer">Pembeli</button>
+                        <button class="tab" data-tab="items">Barang/Jasa</button>
+                    </div>
+                    
+                    <!-- Tab Penjual -->
+                    <div class="tab-content active" id="sellerTab">
+                        <h2 class="panel-title">
+                            <i class="fas fa-store"></i> Informasi Penjual
+                            <span class="small-text">(Data Perusahaan Anda)</span>
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label for="sellerCompanyName">Nama Perusahaan <span class="form-hint">(akan muncul di faktur)</span></label>
+                            <input type="text" id="sellerCompanyName" placeholder="Nama perusahaan Anda" value="InvoicePro Store">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sellerAddress">Alamat Perusahaan</label>
+                            <textarea id="sellerAddress" rows="2" placeholder="Alamat lengkap perusahaan">Jl. Teknologi No. 123, Jakarta, Indonesia</textarea>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sellerEmail">Email</label>
+                                <input type="email" id="sellerEmail" placeholder="email@perusahaan.com" value="info@invoicepro.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sellerPhone">Telepon</label>
+                                <input type="text" id="sellerPhone" placeholder="(021) 12345678" value="(021) 555-1234">
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sellerWebsite">Website</label>
+                                <input type="text" id="sellerWebsite" placeholder="www.perusahaan.com" value="www.invoicepro.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sellerTaxId">NPWP</label>
+                                <input type="text" id="sellerTaxId" placeholder="Nomor NPWP perusahaan" value="01.234.567.8-912.000">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sellerBankAccount">Informasi Rekening Bank</label>
+                            <textarea id="sellerBankAccount" rows="3" placeholder="Nama bank, nomor rekening, nama pemilik rekening">Bank ABC, No. Rek: 123-456-789, a.n. InvoicePro Store</textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Pembeli -->
+                    <div class="tab-content" id="buyerTab">
+                        <h2 class="panel-title">
+                            <i class="fas fa-user-circle"></i> Informasi Pembeli
+                            <span class="small-text">(Data Pelanggan)</span>
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label for="buyerName">Nama Pelanggan/Perusahaan <span class="form-hint">(wajib diisi)</span></label>
+                            <input type="text" id="buyerName" placeholder="Masukkan nama pelanggan">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="buyerAddress">Alamat Pelanggan</label>
+                            <textarea id="buyerAddress" rows="2" placeholder="Alamat lengkap pelanggan"></textarea>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="buyerEmail">Email</label>
+                                <input type="email" id="buyerEmail" placeholder="email@pelanggan.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="buyerPhone">Telepon</label>
+                                <input type="text" id="buyerPhone" placeholder="Nomor telepon pelanggan">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="buyerTaxId">NPWP Pelanggan <span class="form-hint">(opsional)</span></label>
+                            <input type="text" id="buyerTaxId" placeholder="NPWP pelanggan (jika ada)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="buyerNotes">Catatan Tambahan</label>
+                            <textarea id="buyerNotes" rows="2" placeholder="Catatan khusus tentang pelanggan"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Barang/Jasa -->
+                    <div class="tab-content" id="itemsTab">
+                        <h2 class="panel-title">
+                            <i class="fas fa-cube"></i> Tambah Barang/Jasa
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label for="itemName">Nama Item <span class="form-hint">(wajib diisi)</span></label>
+                            <input type="text" id="itemName" placeholder="Nama barang atau jasa">
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="itemQuantity">Jumlah</label>
+                                <input type="number" id="itemQuantity" min="1" value="1">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="itemPrice">Harga per Unit (Rp)</label>
+                                <input type="number" id="itemPrice" min="0" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="itemDescription">Deskripsi Item <span class="form-hint">(opsional)</span></label>
+                            <textarea id="itemDescription" rows="2" placeholder="Deskripsi detail barang/jasa"></textarea>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-block" id="addItem">
+                            <i class="fas fa-plus-circle"></i> Tambah Item ke Faktur
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Panel Logo -->
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-image"></i> Logo Perusahaan
+                    </h2>
+                    
+                    <div class="logo-upload-container" id="logoUploadContainer">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <p><strong>Unggah Logo Perusahaan</strong></p>
+                        <p class="small-text">Seret & lepas atau klik untuk memilih</p>
+                        <p class="small-text" style="color: var(--gray); margin-top: 0.5rem;">
+                            Format: JPG, PNG, SVG (Maks: 2MB)
+                        </p>
+                        
+                        <img id="logoPreview" class="logo-preview hidden" alt="Preview Logo">
+                        
+                        <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                        
+                        <div class="logo-actions">
+                            <button class="btn btn-secondary btn-sm" id="chooseLogoBtn">
+                                <i class="fas fa-folder-open"></i> Pilih File
+                            </button>
+                            <button class="btn btn-danger btn-sm" id="removeLogoBtn">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="small-text" style="color: var(--gray); margin-top: 1rem;">
+                        Logo akan muncul di faktur dan tercetak saat Anda mencetak faktur.
+                    </p>
+                </div>
+                
+                <!-- Mobile Save Button -->
+                <div class="visible-mobile mt-2">
+                    <button class="btn btn-success btn-block" id="saveInvoice">
+                        <i class="fas fa-save"></i> Simpan Faktur
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Invoice Preview -->
+            <div class="preview-section">
+                <div class="panel invoice-preview">
+                    <div class="invoice-logo-container">
+                        <img id="invoiceLogo" class="invoice-logo" src="" alt="Logo Perusahaan" style="display: none;">
+                    </div>
+                    
+                    <div class="invoice-header">
+                        <div>
+                            <div class="invoice-title">FAKTUR PENJUALAN</div>
+                            <div>No: <span id="invoiceNumber">INV-2023-001</span></div>
+                        </div>
+                        <div>
+                            <div>Tanggal: <span id="invoiceDate">10 Oktober 2023</span></div>
+                            <div>Status: <span style="color: var(--success); font-weight: 600;">LUNAS</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-details">
+                        <div>
+                            <div class="panel-title">
+                                <span><i class="fas fa-store"></i> Dari:</span>
+                                <button class="edit-company-btn" id="editSellerBtn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </div>
+                            <div id="companyInfo">
+                                <p><strong>InvoicePro Store</strong><br>
+                                Jl. Teknologi No. 123<br>
+                                Jakarta, Indonesia<br>
+                                Email: info@invoicepro.com<br>
+                                Telp: (021) 555-1234<br>
+                                NPWP: 01.234.567.8-912.000</p>
+                                <p><strong>Rekening:</strong><br>
+                                Bank ABC, No. Rek: 123-456-789, a.n. InvoicePro Store</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="panel-title">
+                                <span><i class="fas fa-user-circle"></i> Kepada:</span>
+                                <button class="edit-company-btn" id="editBuyerBtn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </div>
+                            <div id="customerInfo">
+                                <p>Nama pelanggan akan muncul di sini setelah diisi</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-items">
+                        <h3>Detail Barang/Jasa</h3>
+                        <div class="items-table-container">
+                            <table class="items-table" id="invoiceItemsTable">
+                                <thead>
+                                    <tr>
+                                        <th width="35%">Item</th>
+                                        <th width="15%">Jumlah</th>
+                                        <th width="20%">Harga</th>
+                                        <th width="20%">Total</th>
+                                        <th width="10%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemsTableBody">
+                                    <!-- Items will be added here dynamically -->
+                                    <tr id="emptyStateRow">
+                                        <td colspan="5">
+                                            <div class="empty-state">
+                                                <i class="fas fa-shopping-cart"></i>
+                                                <p>Belum ada item. Tambahkan item menggunakan form.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-totals">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span>Rp <span id="subtotal">0</span></span>
+                        </div>
+                        <div class="total-row">
+                            <span>Pajak (10%):</span>
+                            <span>Rp <span id="tax">0</span></span>
+                        </div>
+                        <div class="total-row grand-total">
+                            <span>TOTAL:</span>
+                            <span>Rp <span id="grandTotal">0</span></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Desktop Action Buttons -->
+                    <div class="desktop-action-buttons">
+                        <button class="btn btn-success" id="saveInvoiceDesktop">
+                            <i class="fas fa-save"></i> Simpan Faktur
+                        </button>
+                        <button class="btn btn-primary" id="downloadInvoice" style="margin-left: 10px;">
+                            <i class="fas fa-download"></i> Unduh PDF
+                        </button>
+                        <button class="btn btn-danger" id="clearInvoice" style="margin-left: 10px;">
+                            <i class="fas fa-trash-alt"></i> Hapus Semua
+                        </button>
+                        <button class="btn btn-info" id="resetToDefault" style="margin-left: 10px;">
+                            <i class="fas fa-undo"></i> Reset Data
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-history"></i> Faktur Terakhir
+                    </h2>
+                    <p id="lastInvoiceInfo">Belum ada faktur yang disimpan. Faktur yang disimpan akan muncul di sini.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="container">
+        <p>SirinVPro &copy; 2025 - Aplikasi Faktur Online Lengkap</p>
+        <p class="small-text mt-1">Dibuat dengan <i class="fas fa-heart" style="color: var(--danger);"></i> untuk kemudahan pembuatan faktur</p>
+        <p class="small-text mt-1">Kompatibel dengan semua perangkat: Desktop, Tablet, dan Mobile</p>
+    </footer>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Item berhasil ditambahkan!</span>
+    </div>
+
+    <script>
+        // Inisialisasi data
+        let invoiceItems = [];
+        let invoiceCounter = 1;
+        let companyLogo = null;
+        let isFormVisible = false;
+        
+        // Data default penjual
+        const defaultSellerData = {
+            companyName: "InvoicePro Store",
+            address: "Jl. Teknologi No. 123, Jakarta, Indonesia",
+            email: "info@invoicepro.com",
+            phone: "(021) 555-1234",
+            website: "www.invoicepro.com",
+            taxId: "01.234.567.8-912.000",
+            bankAccount: "Bank ABC, No. Rek: 123-456-789, a.n. InvoicePro Store"
+        };
+        
+        // Data default pembeli
+        const defaultBuyerData = {
+            name: "",
+            address: "",
+            email: "",
+            phone: "",
+            taxId: "",
+            notes: ""
+        };
+        
+        // DOM Elements
+        // Penjual elements
+        const sellerCompanyNameInput = document.getElementById('sellerCompanyName');
+        const sellerAddressInput = document.getElementById('sellerAddress');
+        const sellerEmailInput = document.getElementById('sellerEmail');
+        const sellerPhoneInput = document.getElementById('sellerPhone');
+        const sellerWebsiteInput = document.getElementById('sellerWebsite');
+        const sellerTaxIdInput = document.getElementById('sellerTaxId');
+        const sellerBankAccountInput = document.getElementById('sellerBankAccount');
+        
+        // Pembeli elements
+        const buyerNameInput = document.getElementById('buyerName');
+        const buyerAddressInput = document.getElementById('buyerAddress');
+        const buyerEmailInput = document.getElementById('buyerEmail');
+        const buyerPhoneInput = document.getElementById('buyerPhone');
+        const buyerTaxIdInput = document.getElementById('buyerTaxId');
+        const buyerNotesInput = document.getElementById('buyerNotes');
+        
+        // Item elements
+        const itemNameInput = document.getElementById('itemName');
+        const itemQuantityInput = document.getElementById('itemQuantity');
+        const itemPriceInput = document.getElementById('itemPrice');
+        const itemDescriptionInput = document.getElementById('itemDescription');
+        
+        // Display elements
+        const itemsTableBody = document.getElementById('itemsTableBody');
+        const emptyStateRow = document.getElementById('emptyStateRow');
+        const companyInfoDisplay = document.getElementById('companyInfo');
+        const customerInfoDisplay = document.getElementById('customerInfo');
+        
+        const subtotalDisplay = document.getElementById('subtotal');
+        const taxDisplay = document.getElementById('tax');
+        const grandTotalDisplay = document.getElementById('grandTotal');
+        
+        const invoiceDateDisplay = document.getElementById('invoiceDate');
+        const invoiceNumberDisplay = document.getElementById('invoiceNumber');
+        const invoiceLogoDisplay = document.getElementById('invoiceLogo');
+        
+        // Logo elements
+        const logoInput = document.getElementById('logoInput');
+        const logoPreview = document.getElementById('logoPreview');
+        const logoUploadContainer = document.getElementById('logoUploadContainer');
+        const chooseLogoBtn = document.getElementById('chooseLogoBtn');
+        const removeLogoBtn = document.getElementById('removeLogoBtn');
+        
+        // Button elements
+        const addItemButton = document.getElementById('addItem');
+        const saveInvoiceButton = document.getElementById('saveInvoice');
+        const saveInvoiceDesktop = document.getElementById('saveInvoiceDesktop');
+        const saveInvoiceMobile = document.getElementById('saveInvoiceMobile');
+        const printInvoiceButton = document.getElementById('printInvoice');
+        const printInvoiceMobile = document.getElementById('printInvoiceMobile');
+        const downloadInvoiceButton = document.getElementById('downloadInvoice');
+        const clearInvoiceButton = document.getElementById('clearInvoice');
+        const resetToDefaultButton = document.getElementById('resetToDefault');
+        const toggleFormMobile = document.getElementById('toggleFormMobile');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        
+        // Tab elements
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Edit buttons
+        const editSellerBtn = document.getElementById('editSellerBtn');
+        const editBuyerBtn = document.getElementById('editBuyerBtn');
+        
+        // Section elements
+        const formSection = document.getElementById('formSection');
+        
+        const lastInvoiceInfo = document.getElementById('lastInvoiceInfo');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type = 'success') {
+            notificationText.textContent = message;
+            
+            // Atur warna berdasarkan tipe notifikasi
+            if (type === 'success') {
+                notification.style.backgroundColor = '#4cc9f0';
+            } else if (type === 'error') {
+                notification.style.backgroundColor = '#f72585';
+            } else if (type === 'warning') {
+                notification.style.backgroundColor = '#ffc107';
+            } else if (type === 'info') {
+                notification.style.backgroundColor = '#17a2b8';
+            }
+            
+            notification.classList.add('show');
+            
+            // Sembunyikan notifikasi setelah 3 detik
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Format angka menjadi format Rupiah
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID').format(amount);
+        }
+        
+        // Update tanggal faktur
+        function updateInvoiceDate() {
+            const now = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            invoiceDateDisplay.textContent = now.toLocaleDateString('id-ID', options);
+        }
+        
+        // Generate nomor faktur
+        function generateInvoiceNumber() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const counter = String(invoiceCounter).padStart(3, '0');
+            
+            return `INV-${year}${month}-${counter}`;
+        }
+        
+        // Update informasi penjual di preview
+        function updateSellerInfo() {
+            const companyName = sellerCompanyNameInput.value.trim() || defaultSellerData.companyName;
+            const address = sellerAddressInput.value.trim() || defaultSellerData.address;
+            const email = sellerEmailInput.value.trim() || defaultSellerData.email;
+            const phone = sellerPhoneInput.value.trim() || defaultSellerData.phone;
+            const taxId = sellerTaxIdInput.value.trim() || defaultSellerData.taxId;
+            const bankAccount = sellerBankAccountInput.value.trim() || defaultSellerData.bankAccount;
+            
+            let sellerHTML = `<p><strong>${companyName}</strong><br>${address}<br>Email: ${email}<br>Telp: ${phone}`;
+            
+            if (taxId) {
+                sellerHTML += `<br>NPWP: ${taxId}`;
+            }
+            
+            sellerHTML += `</p>`;
+            
+            if (bankAccount) {
+                sellerHTML += `<p><strong>Rekening:</strong><br>${bankAccount}</p>`;
+            }
+            
+            companyInfoDisplay.innerHTML = sellerHTML;
+        }
+        
+        // Update informasi pembeli di preview
+        function updateBuyerInfo() {
+            const name = buyerNameInput.value.trim() || 'Nama pelanggan';
+            const address = buyerAddressInput.value.trim() || 'Alamat lengkap pelanggan';
+            const email = buyerEmailInput.value.trim() || '';
+            const phone = buyerPhoneInput.value.trim() || '';
+            const taxId = buyerTaxIdInput.value.trim() || '';
+            const notes = buyerNotesInput.value.trim() || '';
+            
+            let buyerHTML = `<p><strong>${name}</strong>`;
+            
+            if (address) {
+                buyerHTML += `<br>${address}`;
+            }
+            
+            if (email) {
+                buyerHTML += `<br>Email: ${email}`;
+            }
+            
+            if (phone) {
+                buyerHTML += `<br>Telp: ${phone}`;
+            }
+            
+            if (taxId) {
+                buyerHTML += `<br>NPWP: ${taxId}`;
+            }
+            
+            buyerHTML += `</p>`;
+            
+            if (notes) {
+                buyerHTML += `<p><strong>Catatan:</strong><br>${notes}</p>`;
+            }
+            
+            customerInfoDisplay.innerHTML = buyerHTML;
+        }
+        
+        // Hitung total faktur
+        function calculateTotals() {
+            let subtotal = 0;
+            
+            invoiceItems.forEach(item => {
+                subtotal += item.quantity * item.price;
+            });
+            
+            const tax = subtotal * 0.1; // Pajak 10%
+            const grandTotal = subtotal + tax;
+            
+            subtotalDisplay.textContent = formatRupiah(subtotal);
+            taxDisplay.textContent = formatRupiah(tax);
+            grandTotalDisplay.textContent = formatRupiah(grandTotal);
+        }
+        
+        // Tambah item ke faktur
+        function addItemToInvoice() {
+            const name = itemNameInput.value.trim();
+            const quantity = parseInt(itemQuantityInput.value);
+            const price = parseInt(itemPriceInput.value);
+            const description = itemDescriptionInput.value.trim();
+            
+            if (!name) {
+                showNotification('Nama item harus diisi!', 'error');
+                itemNameInput.focus();
+                return;
+            }
+            
+            if (quantity <= 0) {
+                showNotification('Jumlah harus lebih dari 0!', 'error');
+                itemQuantityInput.focus();
+                return;
+            }
+            
+            if (price < 0) {
+                showNotification('Harga tidak boleh negatif!', 'error');
+                itemPriceInput.focus();
+                return;
+            }
+            
+            // Tambahkan item ke array
+            const newItem = {
+                id: Date.now(), // ID unik berdasarkan timestamp
+                name: name,
+                quantity: quantity,
+                price: price,
+                description: description,
+                total: quantity * price
+            };
+            
+            invoiceItems.push(newItem);
+            
+            // Reset form input
+            itemNameInput.value = '';
+            itemQuantityInput.value = '1';
+            itemPriceInput.value = '0';
+            itemDescriptionInput.value = '';
+            
+            // Update tampilan
+            updateInvoiceItemsTable();
+            calculateTotals();
+            
+            // Tampilkan notifikasi
+            showNotification(`"${name}" berhasil ditambahkan ke faktur!`);
+            
+            // Fokus kembali ke input nama item
+            itemNameInput.focus();
+            
+            // Kembali ke tab items setelah menambahkan
+            switchTab('items');
+        }
+        
+        // Hapus item dari faktur
+        function removeItemFromInvoice(itemId) {
+            invoiceItems = invoiceItems.filter(item => item.id !== itemId);
+            updateInvoiceItemsTable();
+            calculateTotals();
+            showNotification('Item berhasil dihapus dari faktur!', 'warning');
+        }
+        
+        // Update tabel item faktur
+        function updateInvoiceItemsTable() {
+            // Kosongkan tabel
+            itemsTableBody.innerHTML = '';
+            
+            // Jika tidak ada item, tampilkan pesan kosong
+            if (invoiceItems.length === 0) {
+                itemsTableBody.appendChild(emptyStateRow.cloneNode(true));
+                return;
+            }
+            
+            // Tambahkan setiap item ke tabel
+            invoiceItems.forEach(item => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>
+                        <strong>${item.name}</strong>
+                        ${item.description ? `<br><small class="small-text">${item.description}</small>` : ''}
+                    </td>
+                    <td>${item.quantity}</td>
+                    <td>Rp ${formatRupiah(item.price)}</td>
+                    <td>Rp ${formatRupiah(item.total)}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" 
+                                onclick="removeItemFromInvoice(${item.id})" title="Hapus item">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                itemsTableBody.appendChild(row);
+            });
+        }
+        
+        // Handle logo upload
+        function handleLogoUpload(file) {
+            // Validasi ukuran file (maks 2MB)
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            if (file.size > maxSize) {
+                showNotification('Ukuran file terlalu besar. Maksimal 2MB.', 'error');
+                return;
+            }
+            
+            // Validasi tipe file
+            const validTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/gif'];
+            if (!validTypes.includes(file.type)) {
+                showNotification('Format file tidak didukung. Gunakan JPG, PNG, atau SVG.', 'error');
+                return;
+            }
+            
+            // Baca file sebagai URL data
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const logoUrl = e.target.result;
+                
+                // Simpan logo di variabel
+                companyLogo = logoUrl;
+                
+                // Tampilkan preview logo
+                logoPreview.src = logoUrl;
+                logoPreview.classList.remove('hidden');
+                
+                // Tampilkan logo di faktur
+                invoiceLogoDisplay.src = logoUrl;
+                invoiceLogoDisplay.style.display = 'block';
+                
+                showNotification('Logo berhasil diunggah!', 'success');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Hapus logo
+        function removeLogo() {
+            companyLogo = null;
+            logoPreview.src = '';
+            logoPreview.classList.add('hidden');
+            invoiceLogoDisplay.src = '';
+            invoiceLogoDisplay.style.display = 'none';
+            logoInput.value = '';
+            
+            showNotification('Logo berhasil dihapus!', 'warning');
+        }
+        
+        // Toggle form visibility di mobile
+        function toggleFormVisibility() {
+            isFormVisible = !isFormVisible;
+            
+            if (isFormVisible) {
+                formSection.classList.add('active');
+                mobileMenuToggle.innerHTML = '<i class="fas fa-times"></i><span>Tutup Form</span>';
+                toggleFormMobile.innerHTML = '<i class="fas fa-times"></i> Tutup';
+                toggleFormMobile.classList.remove('btn-primary');
+                toggleFormMobile.classList.add('btn-warning');
+            } else {
+                formSection.classList.remove('active');
+                mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i><span>Menu Form</span>';
+                toggleFormMobile.innerHTML = '<i class="fas fa-edit"></i> Form';
+                toggleFormMobile.classList.remove('btn-warning');
+                toggleFormMobile.classList.add('btn-primary');
+            }
+        }
+        
+        // Fungsi untuk switch tab
+        function switchTab(tabName) {
+            // Update tab aktif
+            tabs.forEach(tab => {
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Update konten tab aktif
+            tabContents.forEach(content => {
+                if (content.id === `${tabName}Tab`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+            
+            // Auto focus ke input pertama di tab aktif
+            setTimeout(() => {
+                const activeTab = document.getElementById(`${tabName}Tab`);
+                const firstInput = activeTab.querySelector('input, textarea, select');
+                if (firstInput) {
+                    firstInput.focus();
+                }
+            }, 100);
+        }
+        
+        // Edit data penjual
+        function editSeller() {
+            switchTab('seller');
+            toggleFormVisibility();
+            showNotification('Silakan edit data penjual/perusahaan Anda', 'info');
+        }
+        
+        // Edit data pembeli
+        function editBuyer() {
+            switchTab('buyer');
+            toggleFormVisibility();
+            showNotification('Silakan edit data pembeli/pelanggan', 'info');
+        }
+        
+        // Simpan faktur (simulasi)
+        function saveInvoice() {
+            if (invoiceItems.length === 0) {
+                showNotification('Tambahkan setidaknya satu item sebelum menyimpan faktur!', 'error');
+                return;
+            }
+            
+            if (!buyerNameInput.value.trim()) {
+                showNotification('Nama pelanggan harus diisi sebelum menyimpan!', 'error');
+                switchTab('buyer');
+                buyerNameInput.focus();
+                return;
+            }
+            
+            // Data penjual
+            const sellerData = {
+                companyName: sellerCompanyNameInput.value.trim() || defaultSellerData.companyName,
+                address: sellerAddressInput.value.trim() || defaultSellerData.address,
+                email: sellerEmailInput.value.trim() || defaultSellerData.email,
+                phone: sellerPhoneInput.value.trim() || defaultSellerData.phone,
+                website: sellerWebsiteInput.value.trim() || defaultSellerData.website,
+                taxId: sellerTaxIdInput.value.trim() || defaultSellerData.taxId,
+                bankAccount: sellerBankAccountInput.value.trim() || defaultSellerData.bankAccount
+            };
+            
+            // Data pembeli
+            const buyerData = {
+                name: buyerNameInput.value.trim(),
+                address: buyerAddressInput.value.trim(),
+                email: buyerEmailInput.value.trim(),
+                phone: buyerPhoneInput.value.trim(),
+                taxId: buyerTaxIdInput.value.trim(),
+                notes: buyerNotesInput.value.trim()
+            };
+            
+            // Simpan ke localStorage (simulasi)
+            const invoiceData = {
+                invoiceNumber: invoiceNumberDisplay.textContent,
+                date: invoiceDateDisplay.textContent,
+                seller: sellerData,
+                buyer: buyerData,
+                items: invoiceItems,
+                subtotal: parseInt(subtotalDisplay.textContent.replace(/,/g, '')),
+                tax: parseInt(taxDisplay.textContent.replace(/,/g, '')),
+                grandTotal: parseInt(grandTotalDisplay.textContent.replace(/,/g, '')),
+                logo: companyLogo // Simpan logo juga
+            };
+            
+            localStorage.setItem('lastInvoice', JSON.stringify(invoiceData));
+            
+            // Update informasi faktur terakhir
+            lastInvoiceInfo.innerHTML = `
+                <strong>${invoiceData.invoiceNumber}</strong> - ${invoiceData.buyer.name}<br>
+                Total: Rp ${formatRupiah(invoiceData.grandTotal)}<br>
+                <small>Disimpan pada ${new Date().toLocaleTimeString('id-ID')}</small>
+            `;
+            
+            // Generate nomor faktur baru untuk transaksi berikutnya
+            invoiceCounter++;
+            invoiceNumberDisplay.textContent = generateInvoiceNumber();
+            
+            // Tampilkan notifikasi
+            showNotification('Faktur berhasil disimpan!', 'success');
+            
+            // Di mobile, tutup form setelah menyimpan
+            if (window.innerWidth < 992) {
+                setTimeout(() => {
+                    toggleFormVisibility();
+                }, 500);
+            }
+        }
+        
+        // Cetak faktur
+        function printInvoice() {
+            if (invoiceItems.length === 0) {
+                showNotification('Tambahkan setidaknya satu item sebelum mencetak faktur!', 'error');
+                return;
+            }
+            
+            if (!buyerNameInput.value.trim()) {
+                showNotification('Nama pelanggan harus diisi sebelum mencetak!', 'error');
+                switchTab('buyer');
+                buyerNameInput.focus();
+                return;
+            }
+            
+            // Tampilkan pesan informasi sebelum mencetak
+            showNotification('Mempersiapkan faktur untuk dicetak...', 'success');
+            
+            // Beri jeda sebelum mencetak
+            setTimeout(() => {
+                // Buka jendela cetak
+                window.print();
+            }, 500);
+        }
+        
+        // Unduh faktur sebagai PDF (simulasi)
+        function downloadInvoice() {
+            if (invoiceItems.length === 0) {
+                showNotification('Tambahkan setidaknya satu item sebelum mengunduh faktur!', 'error');
+                return;
+            }
+            
+            if (!buyerNameInput.value.trim()) {
+                showNotification('Nama pelanggan harus diisi sebelum mengunduh!', 'error');
+                switchTab('buyer');
+                buyerNameInput.focus();
+                return;
+            }
+            
+            showNotification('Fitur unduh PDF sedang diproses (simulasi)...', 'success');
+            
+            // Dalam implementasi nyata, di sini akan ada kode untuk generate PDF
+            // Contoh: menggunakan library seperti jsPDF
+        }
+        
+        // Hapus semua data faktur
+        function clearInvoice() {
+            if (invoiceItems.length === 0 && !buyerNameInput.value.trim() && !companyLogo) {
+                showNotification('Tidak ada data faktur untuk dihapus!', 'error');
+                return;
+            }
+            
+            if (confirm('Apakah Anda yakin ingin menghapus semua data faktur ini?')) {
+                // Reset semua input pembeli
+                buyerNameInput.value = '';
+                buyerAddressInput.value = '';
+                buyerEmailInput.value = '';
+                buyerPhoneInput.value = '';
+                buyerTaxIdInput.value = '';
+                buyerNotesInput.value = '';
+                
+                // Reset input item
+                itemNameInput.value = '';
+                itemQuantityInput.value = '1';
+                itemPriceInput.value = '0';
+                itemDescriptionInput.value = '';
+                
+                // Reset logo jika ada
+                if (companyLogo) {
+                    removeLogo();
+                }
+                
+                // Reset array items
+                invoiceItems = [];
+                
+                // Update tampilan
+                updateBuyerInfo();
+                updateInvoiceItemsTable();
+                calculateTotals();
+                
+                showNotification('Semua data faktur berhasil dihapus!', 'success');
+            }
+        }
+        
+        // Reset data ke default
+        function resetToDefault() {
+            if (confirm('Apakah Anda yakin ingin mereset semua data ke default? Data pembeli dan item akan dihapus.')) {
+                // Reset data penjual ke default
+                sellerCompanyNameInput.value = defaultSellerData.companyName;
+                sellerAddressInput.value = defaultSellerData.address;
+                sellerEmailInput.value = defaultSellerData.email;
+                sellerPhoneInput.value = defaultSellerData.phone;
+                sellerWebsiteInput.value = defaultSellerData.website;
+                sellerTaxIdInput.value = defaultSellerData.taxId;
+                sellerBankAccountInput.value = defaultSellerData.bankAccount;
+                
+                // Reset data pembeli
+                buyerNameInput.value = '';
+                buyerAddressInput.value = '';
+                buyerEmailInput.value = '';
+                buyerPhoneInput.value = '';
+                buyerTaxIdInput.value = '';
+                buyerNotesInput.value = '';
+                
+                // Reset item
+                itemNameInput.value = '';
+                itemQuantityInput.value = '1';
+                itemPriceInput.value = '0';
+                itemDescriptionInput.value = '';
+                
+                // Reset logo jika ada
+                if (companyLogo) {
+                    removeLogo();
+                }
+                
+                // Reset array items
+                invoiceItems = [];
+                
+                // Update tampilan
+                updateSellerInfo();
+                updateBuyerInfo();
+                updateInvoiceItemsTable();
+                calculateTotals();
+                
+                showNotification('Semua data telah direset ke default!', 'info');
+            }
+        }
+        
+        // Muat faktur terakhir dari localStorage (jika ada)
+        function loadLastInvoice() {
+            const lastInvoice = localStorage.getItem('lastInvoice');
+            
+            if (lastInvoice) {
+                try {
+                    const invoiceData = JSON.parse(lastInvoice);
+                    
+                    lastInvoiceInfo.innerHTML = `
+                        <strong>${invoiceData.invoiceNumber}</strong> - ${invoiceData.buyer.name}<br>
+                        Total: Rp ${formatRupiah(invoiceData.grandTotal)}<br>
+                        <small>Disimpan pada ${new Date().toLocaleTimeString('id-ID')}</small>
+                    `;
+                    
+                    // Muat data penjual jika ada
+                    if (invoiceData.seller) {
+                        sellerCompanyNameInput.value = invoiceData.seller.companyName || defaultSellerData.companyName;
+                        sellerAddressInput.value = invoiceData.seller.address || defaultSellerData.address;
+                        sellerEmailInput.value = invoiceData.seller.email || defaultSellerData.email;
+                        sellerPhoneInput.value = invoiceData.seller.phone || defaultSellerData.phone;
+                        sellerWebsiteInput.value = invoiceData.seller.website || defaultSellerData.website;
+                        sellerTaxIdInput.value = invoiceData.seller.taxId || defaultSellerData.taxId;
+                        sellerBankAccountInput.value = invoiceData.seller.bankAccount || defaultSellerData.bankAccount;
+                        
+                        updateSellerInfo();
+                    }
+                    
+                    // Muat data pembeli jika ada
+                    if (invoiceData.buyer) {
+                        buyerNameInput.value = invoiceData.buyer.name || '';
+                        buyerAddressInput.value = invoiceData.buyer.address || '';
+                        buyerEmailInput.value = invoiceData.buyer.email || '';
+                        buyerPhoneInput.value = invoiceData.buyer.phone || '';
+                        buyerTaxIdInput.value = invoiceData.buyer.taxId || '';
+                        buyerNotesInput.value = invoiceData.buyer.notes || '';
+                        
+                        updateBuyerInfo();
+                    }
+                    
+                    // Muat logo jika ada
+                    if (invoiceData.logo) {
+                        companyLogo = invoiceData.logo;
+                        logoPreview.src = companyLogo;
+                        logoPreview.classList.remove('hidden');
+                        invoiceLogoDisplay.src = companyLogo;
+                        invoiceLogoDisplay.style.display = 'block';
+                    }
+                    
+                    // Muat items jika ada
+                    if (invoiceData.items && invoiceData.items.length > 0) {
+                        invoiceItems = invoiceData.items;
+                        updateInvoiceItemsTable();
+                        calculateTotals();
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading last invoice:', error);
+                    localStorage.removeItem('lastInvoice');
+                }
+            }
+        }
+        
+        // Deteksi ukuran layar dan atur form visibility
+        function handleResponsiveLayout() {
+            const width = window.innerWidth;
+            
+            if (width >= 992) {
+                // Desktop: form selalu terlihat
+                formSection.classList.add('active');
+                isFormVisible = true;
+            } else {
+                // Mobile/tablet: form tersembunyi secara default
+                formSection.classList.remove('active');
+                isFormVisible = false;
+                mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i><span>Menu Form</span>';
+                toggleFormMobile.innerHTML = '<i class="fas fa-edit"></i> Form';
+                toggleFormMobile.classList.remove('btn-warning');
+                toggleFormMobile.classList.add('btn-primary');
+            }
+        }
+        
+        // Inisialisasi aplikasi
+        function initApp() {
+            // Set tanggal faktur
+            updateInvoiceDate();
+            
+            // Generate nomor faktur
+            invoiceNumberDisplay.textContent = generateInvoiceNumber();
+            
+            // Muat faktur terakhir
+            loadLastInvoice();
+            
+            // Atur layout responsif
+            handleResponsiveLayout();
+            
+            // Event Listeners untuk input penjual
+            sellerCompanyNameInput.addEventListener('input', updateSellerInfo);
+            sellerAddressInput.addEventListener('input', updateSellerInfo);
+            sellerEmailInput.addEventListener('input', updateSellerInfo);
+            sellerPhoneInput.addEventListener('input', updateSellerInfo);
+            sellerTaxIdInput.addEventListener('input', updateSellerInfo);
+            sellerBankAccountInput.addEventListener('input', updateSellerInfo);
+            
+            // Event Listeners untuk input pembeli
+            buyerNameInput.addEventListener('input', updateBuyerInfo);
+            buyerAddressInput.addEventListener('input', updateBuyerInfo);
+            buyerEmailInput.addEventListener('input', updateBuyerInfo);
+            buyerPhoneInput.addEventListener('input', updateBuyerInfo);
+            buyerTaxIdInput.addEventListener('input', updateBuyerInfo);
+            buyerNotesInput.addEventListener('input', updateBuyerInfo);
+            
+            // Logo upload events
+            chooseLogoBtn.addEventListener('click', () => logoInput.click());
+            
+            logoInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleLogoUpload(e.target.files[0]);
+                }
+            });
+            
+            removeLogoBtn.addEventListener('click', removeLogo);
+            
+            // Drag and drop untuk logo
+            logoUploadContainer.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                logoUploadContainer.classList.add('dragover');
+            });
+            
+            logoUploadContainer.addEventListener('dragleave', () => {
+                logoUploadContainer.classList.remove('dragover');
+            });
+            
+            logoUploadContainer.addEventListener('drop', (e) => {
+                e.preventDefault();
+                logoUploadContainer.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length > 0) {
+                    handleLogoUpload(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Klik container juga bisa memilih file
+            logoUploadContainer.addEventListener('click', () => logoInput.click());
+            
+            // Item events
+            addItemButton.addEventListener('click', addItemToInvoice);
+            
+            // Save events
+            saveInvoiceButton.addEventListener('click', saveInvoice);
+            saveInvoiceDesktop.addEventListener('click', saveInvoice);
+            saveInvoiceMobile.addEventListener('click', saveInvoice);
+            
+            // Print events
+            printInvoiceButton.addEventListener('click', printInvoice);
+            printInvoiceMobile.addEventListener('click', printInvoice);
+            
+            // Other events
+            downloadInvoiceButton.addEventListener('click', downloadInvoice);
+            clearInvoiceButton.addEventListener('click', clearInvoice);
+            resetToDefaultButton.addEventListener('click', resetToDefault);
+            
+            // Toggle form events
+            toggleFormMobile.addEventListener('click', toggleFormVisibility);
+            mobileMenuToggle.addEventListener('click', toggleFormVisibility);
+            
+            // Tab events
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+            
+            // Edit buttons events
+            editSellerBtn.addEventListener('click', editSeller);
+            editBuyerBtn.addEventListener('click', editBuyer);
+            
+            // Tambahkan item dengan menekan Enter di input nama item
+            itemNameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addItemToInvoice();
+                }
+            });
+            
+            // Event listener untuk resize window
+            window.addEventListener('resize', handleResponsiveLayout);
+            
+            // Contoh data awal untuk demo
+            setTimeout(() => {
+                if (invoiceItems.length === 0 && !buyerNameInput.value.trim()) {
+                    // Isi contoh data pembeli
+                    buyerNameInput.value = 'PT. Contoh Digital';
+                    buyerAddressInput.value = 'Jl. Teknologi No. 456, Jakarta Selatan';
+                    buyerEmailInput.value = 'info@contohdigital.com';
+                    buyerPhoneInput.value = '(021) 987-6543';
+                    buyerTaxIdInput.value = '02.345.678.9-123.000';
+                    buyerNotesInput.value = 'Pelanggan premium - pembayaran 30 hari';
+                    updateBuyerInfo();
+                    
+                    // Tambahkan contoh item jika tidak ada item
+                    itemNameInput.value = 'Web Design Service';
+                    itemQuantityInput.value = '1';
+                    itemPriceInput.value = '2500000';
+                    itemDescriptionInput.value = 'Desain website perusahaan dengan 5 halaman';
+                    addItemToInvoice();
+                    
+                    itemNameInput.value = 'Hosting (1 tahun)';
+                    itemQuantityInput.value = '1';
+                    itemPriceInput.value = '800000';
+                    itemDescriptionInput.value = 'Hosting premium dengan SSL dan backup harian';
+                    addItemToInvoice();
+                    
+                    itemNameInput.value = 'Domain (.com)';
+                    itemQuantityInput.value = '1';
+                    itemPriceInput.value = '150000';
+                    itemDescriptionInput.value = 'Registrasi domain contohdigital.com';
+                    addItemToInvoice();
+                    
+                    showNotification('Contoh data faktur telah dimuat. Silakan coba fitur-fitur aplikasi!', 'info');
+                }
+            }, 1000);
+        }
+        
+        // Jalankan aplikasi saat halaman selesai dimuat
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
